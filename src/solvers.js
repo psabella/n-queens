@@ -56,16 +56,33 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  // relevant helper functions (board.js)
-  // hasRowConflictAt: function(rowIndex)
-  // hasAnyRowConflicts: function()
-  // hasColConflictAt: function(colIndex)
-  // hasAnyColConflicts: function()
+
+  /* Note
+
+  We realize that the function only asked for a count. But we wanted to see
+  if we could also generate all the possible solution boards for the count. It was a challenge because we were hung up on our inability to slice() insteaad but realized the difference but shallow and deepclones. as a result. the Test Provides a lot more. 
+
+  */
+
 
   // variable to hold the collection of solution matrices
   var solutions = [];
   // variable to hold count, to be returned by the fn
   var solutionCount = 0;
+
+  function deepClone(arr) {
+    var len = arr.length;
+    var newArr = new Array(len);
+    for (var i=0; i<len; i++) {
+      if (Array.isArray(arr[i])) {
+        newArr[i] = deepClone(arr[i]);
+      }
+      else {
+        newArr[i] = arr[i];
+      }
+    }
+    return newArr;
+    }
 
   var rowConflicter = function(arr, rowIndex) {
     var specificRow = arr[rowIndex];
@@ -76,7 +93,7 @@ window.countNRooksSolutions = function(n) {
         return true;
       }
     }
-    return false; // fixme
+    return false; //
   };
 
   var generateRookBoards = function(arr, colIndex, n) {
@@ -86,26 +103,32 @@ window.countNRooksSolutions = function(n) {
     }
     else {
       for (var i = 0; i < arr.length; i++) {
-        var boardMatrix= arr.slice();
-        if (!rowConflicter(boardMatrix, i)) {
-          boardMatrix[i][colIndex] = 1;
+        var boardMatrix = deepClone(arr);
 
-          generateRookBoards(boardMatrix, colIndex++, n);
+        if (rowConflicter(boardMatrix, i) === false) {
+          boardMatrix[i][colIndex] = 1;
+          generateRookBoards(boardMatrix, colIndex + 1, n);
         }
       }
     }
   }
 
+
+
+
 var test = createMatrix(5);
 console.log(rowConflicter(test, 1));
 var board = createMatrix(n);
-generateRookBoards(board, 0, 4);
+generateRookBoards(board, 0, n)
 
 
 console.log(solutions);
 console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
 return solutionCount;
 };
+
+
+
   // var populateColumn = function(/* what goes here? */) {
     // recursive fn to populate column based on helper fn checks
     // return
