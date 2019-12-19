@@ -24,7 +24,51 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  hasRowConflictAt: function(rowIndex) {
+    hasAnyRowConflicts: function()
+    hasColConflictAt: function(colIndex)
+    hasAnyColConflicts:
+
+  for (var i = 0; i < n; i++) {
+    if (hasColConflictAt(i)=== false && hasRowConflictAt(i) === false)
+
+
+  }
+  //   var solutionCount = undefined; //fixme
+//   var solutionBoard = [];
+// RecursiveFunction {
+//   n--
+// RecursiveFunction(value)
+
+//     if (value.rows().length === 0)
+//     solutionBoard.push(value);
+
+//   for (i = 0; i < value.rows().length; i++)
+//     {
+//       tempvalue.
+//       RecursiveFunction()
+//     }
+
+
+
+//   RecursiveFunction(new Board(n))
+
+}
+
+
+  // RecursiveFunction{startMatrix, row, column, avoid}
+  // for (i = -0; i < this.rows().length 9++) {
+  //     if (column != avoid)
+  //     startMatrix[i][value] = 1  // assign rook here
+  //     RecursiveFunction(startMatrix, row+1 )
+
+  // }
+  //         iterate through length of indivual matrix
+
+  //         PLace Rook. set rook position to 1. value Array.
+  //         eliminate the arrays
+  //         RecursiveFunction(newMAtrix, )
+  solution
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
