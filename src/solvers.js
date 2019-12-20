@@ -60,7 +60,7 @@ window.countNRooksSolutions = function(n) {
   /* Note
 
   We realize that the function only asked for a count. But we wanted to see
-  if we could also generate all the possible solution boards for the count. It was a challenge because we were hung up on our inability to slice() insteaad but realized the difference but shallow and deepclones. as a result. the Test Provides a lot more. 
+  if we could also generate all the possible solution boards for the count. It was a challenge because we were hung up on our inability to slice() insteaad but realized the difference but shallow and deepclones. as a result. the Test Provides a lot more.
 
   */
 
@@ -179,7 +179,119 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+
+  /* Note
+
+  We realize that the function only asked for a count. But we wanted to see
+  if we could also generate all the possible solution boards for the count. It was a challenge because we were hung up on our inability to slice() insteaad but realized the difference but shallow and deepclones. as a result. the Test Provides a lot more.
+
+  */
+
+
+  // variable to hold the collection of solution matrices
+  var solutions = [];
+  // variable to hold count, to be returned by the fn
+  var solutionCount = 0;
+
+ majorDiagonalConflictor = function(arr, row, column) {
+    var count = 0;
+    var column = column;
+    var row = row;
+    var diagPositionals;
+    if (row <= column) {
+      diagPositionals = row;
+    }
+    else {
+      diagPositionals = column;
+    }
+    for (var i = diagPositionals ; i >= 0; i--) {
+      count += arr[row][column];
+      row--;
+      column--;
+      if (count === 1) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  minorDiagonalConflictor = function(arr, row, column) {
+    var count = 0;
+    var column = column;
+    var row = row;
+    var diagPositionals;
+    if (row <= column) {
+      diagPositionals = row;
+    }
+    else {
+      diagPositionals = column;
+    }
+    for (var i = diagPositionals ; i >= 0; i--) {
+      count += arr[row][column];
+      row++;
+      column--;
+      if (count === 1) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+
+
+  function deepClone(arr) {
+    var len = arr.length;
+    var newArr = new Array(len);
+    for (var i=0; i<len; i++) {
+      if (Array.isArray(arr[i])) {
+        newArr[i] = deepClone(arr[i]);
+      }
+      else {
+        newArr[i] = arr[i];
+      }
+    }
+    return newArr;
+    }
+
+  var rowConflicter = function(arr, rowIndex) {
+    var specificRow = arr[rowIndex];
+    var count = 0;
+    for (var i = 0; i < specificRow.length; i++) {
+      count += specificRow[i];
+      if (count === 1) {
+        return true;
+      }
+    }
+    return false; //
+  };
+
+  var generateRookBoards = function(arr, colIndex, n) {
+  if (colIndex === n) {
+      solutions.push(arr);
+      solutionCount++;
+    }
+    else {
+      for (var i = 0; i < arr.length; i++) {
+        var boardMatrix = deepClone(arr);
+
+        if ((rowConflicter(boardMatrix, i) === false) && (majorDiagonalConflictor(boardMatrix, i, colIndex) === false) && (minorDiagonalConflictor(boardMatrix, i, colIndex)) ) {
+          boardMatrix[i][colIndex] = 1;
+          generateRookBoards(boardMatrix, colIndex + 1, n);
+        }
+      }
+    }
+  }
+
+
+
+
+var test = createMatrix(5);
+console.log(rowConflicter(test, 1));
+var board = createMatrix(n);
+generateRookBoards(board, 0, n)
+
+
+console.log(solutions);
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
