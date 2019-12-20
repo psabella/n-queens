@@ -193,18 +193,12 @@ window.countNQueensSolutions = function(n) {
   // variable to hold count, to be returned by the fn
   var solutionCount = 0;
 
- majorDiagonalConflictor = function(arr, row, column) {
+ var majorDiagonalConflictor = function(arr, row, column) {
     var count = 0;
     var column = column;
     var row = row;
-    var diagPositionals;
-    if (row <= column) {
-      diagPositionals = row;
-    }
-    else {
-      diagPositionals = column;
-    }
-    for (var i = diagPositionals ; i >= 0; i--) {
+
+    while (row >= 0 && column >= 0) {
       count += arr[row][column];
       row--;
       column--;
@@ -213,20 +207,14 @@ window.countNQueensSolutions = function(n) {
       }
     }
     return false;
-  },
+  };
 
-  minorDiagonalConflictor = function(arr, row, column) {
+  var minorDiagonalConflictor = function(arr, row, column) {
     var count = 0;
     var column = column;
     var row = row;
-    var diagPositionals;
-    if (row <= column) {
-      diagPositionals = row;
-    }
-    else {
-      diagPositionals = column;
-    }
-    for (var i = diagPositionals ; i >= 0; i--) {
+
+    while (row < arr.length && column >= 0) {
       count += arr[row][column];
       row++;
       column--;
@@ -235,8 +223,7 @@ window.countNQueensSolutions = function(n) {
       }
     }
     return false;
-  },
-
+  };
 
 
   function deepClone(arr) {
@@ -251,7 +238,7 @@ window.countNQueensSolutions = function(n) {
       }
     }
     return newArr;
-    }
+    };
 
   var rowConflicter = function(arr, rowIndex) {
     var specificRow = arr[rowIndex];
@@ -265,7 +252,7 @@ window.countNQueensSolutions = function(n) {
     return false; //
   };
 
-  var generateRookBoards = function(arr, colIndex, n) {
+  var generateQueenBoards = function(arr, colIndex, n) {
   if (colIndex === n) {
       solutions.push(arr);
       solutionCount++;
@@ -274,9 +261,9 @@ window.countNQueensSolutions = function(n) {
       for (var i = 0; i < arr.length; i++) {
         var boardMatrix = deepClone(arr);
 
-        if ((rowConflicter(boardMatrix, i) === false) && (majorDiagonalConflictor(boardMatrix, i, colIndex) === false) && (minorDiagonalConflictor(boardMatrix, i, colIndex)) ) {
+        if ((rowConflicter(boardMatrix, i) === false) && (majorDiagonalConflictor(boardMatrix, i, colIndex) === false) && (minorDiagonalConflictor(boardMatrix, i, colIndex) === false) ) {
           boardMatrix[i][colIndex] = 1;
-          generateRookBoards(boardMatrix, colIndex + 1, n);
+          generateQueenBoards(boardMatrix, colIndex + 1, n);
         }
       }
     }
@@ -288,7 +275,7 @@ window.countNQueensSolutions = function(n) {
 var test = createMatrix(5);
 console.log(rowConflicter(test, 1));
 var board = createMatrix(n);
-generateRookBoards(board, 0, n)
+generateQueenBoards(board, 0, n)
 
 
 console.log(solutions);
